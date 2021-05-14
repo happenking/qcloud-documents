@@ -108,7 +108,7 @@
        nopreempt               # 设置非抢占模式，
        # preempt_delay 10      # 仅 state MASTER 时生效    
        priority 100            # 两设备是相同值的等权重节点
-       advert_int 1        
+       advert_int 5        
        authentication {
            auth_type PASS
            auth_pass 1111
@@ -169,7 +169,7 @@
        nopreempt               # 设置非抢占模式
        # preempt_delay 10      # 仅 state MASTER 时生效   
        priority 100              # 两设备是相同值的等权重节点
-       advert_int 1       
+       advert_int 5       
        authentication {
            auth_type PASS
            auth_pass 1111
