@@ -15,7 +15,7 @@
 
 ## 注意事项
 + 推荐使用单播方式进行 VRRP 通信。
-+ 强烈推荐使用 Keepalived（**1.2.24版本及以上**）。
++ 推荐使用 Keepalived（**1.2.24版本及以上**）。
 + 确保已经配置以下 garp 相关参数。因为 keepalived 依赖 ARP 报文更新 IP 信息，如果缺少以下参数，会导致某些场景下，主设备不发送 ARP 导致通信异常。
    ```plaintext
   garp_master_delay 1
@@ -24,6 +24,9 @@
 + 确保同一 VPC 下的每个主备集群需要配置不同的 vrrp router id。
 + 确定没有采用 strict 模式，即需要删除“vrrp_strict” 配置。
 + 控制单个网卡上配置的 VIP 数量，建议目前在单个网卡绑定的高可用虚拟 IP 数量不超过5个。如果需要使用多个虚拟 IP，建议在 keepalived 配置文件的 global_defs 段落添加或修改配置“vrrp_garp_master_repeat 1”。
++ 通过调节adver_int参数的大小，在抗网络抖动及灾害恢复速度进行平衡取舍。当advert_int参数过小，容易受网络抖动影响发生倒换或进入暂时双主（**脑裂**）至网络恢复。当advert_int参数过大，会导致主机器故障后，主备倒换慢（即服务暂停时间长）。
++ track_script 脚本的具体执行项（如checkhaproxy）中的interval参数请适当提高，避免脚本执行超时导致FAULT状态的发生。
++（可选）注意日志打印导致的磁盘使用量上涨，可以通过logrotate等工具解决。
 
 ## 操作步骤
 
