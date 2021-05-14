@@ -221,7 +221,7 @@ keepalived 主要日志仍然记录在“/var/log/message”中，可以通过�
 
 1. 登录云服务器，执行 `vim /etc/keepalived/notify_action.sh` 命令添加脚本“notify_action.sh”，脚本内容如下：
 
-   ```plaintext
+   ```
    #!/bin/bash
    #/etc/keepalived/notify_action.sh
    log_file=/var/log/keepalived.log
