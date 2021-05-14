@@ -206,7 +206,7 @@
    ```
 
 6. 检查两台云服务器的主备状态，并确认 HAVIP 已经正确的绑定到主备服务器。
->?此示例中 HAVIP-01 的优先级更高，所以正常情况下，HAVIP-01 将被选择为主节点。
+>?此示例中 HAVIP-01 先启动keepalived服务，所以正常情况下，HAVIP-01 将被选择为主节点。
 >
 登录 [高可用虚拟 IP](https://console.cloud.tencent.com/vpc/havip) 控制台，可以看到 HAVIP 绑定的云服务器为主节点云 HAVIP-01，如下图所示。
 ![](https://main.qcloudimg.com/raw/6c6755680da646ab26d5774873af82d5.png)
