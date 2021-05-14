@@ -51,7 +51,7 @@
 ![](https://main.qcloudimg.com/raw/a3d894863e5405477aa9910487c5f198.png)
 
 ### 步骤2：在主服务器和备服务器上安装 keepalived 软件（推荐1.2.24版本及以上）
-本文以 CentOS 7.6镜像类型服务器为例提供 keepalived 的安装方法，如有其他需求，请联系技术支持人员。
+本文以 CentOS 7.6镜像类型服务器为例提供 keepalived 的安装方法。
 1. 查看 keepalived 软件包版本号是否符合要求。
    ```plaintext
    yum list keepalived
@@ -76,6 +76,7 @@
 
 ### 步骤3：配置 keepalived，绑定高可用 VIP 到主备云服务器
 1. 登录主节点云服务器 HAVIP-01，执行 `vim /etc/keepalived/keepalived.conf`，修改相关配置。
+   HAVIP-01 和 HAVIP-02 在本例中将被配置成“等权重节点”，即 state 均为 BACKUP，priority 均为 100
 
    ```plaintext
    ! Configuration File for keepalived
@@ -100,12 +101,12 @@
    }
    vrrp_instance VI_1 {
    #注意主备参数选择
-   state BACKUP                # 设置初始状态为“备“
+   state BACKUP                # 设置初始状态均为“备“
        interface eth0          # 设置绑定 VIP 的网卡 例如 eth0  
        virtual_router_id 51    # 配置集群 virtual_router_id 值
        nopreempt               # 设置非抢占模式，
        # preempt_delay 10      # 仅 state MASTER 时生效    
-       priority 100            # 设置优先级，值越大优先级越高
+       priority 100            # 两设备是相同值的等权重节点
        advert_int 1        
        authentication {
            auth_type PASS
@@ -161,13 +162,13 @@
    }
    vrrp_instance VI_1 {
    #注意主备参数选择
-   state BACKUP                # 设置初始状态为“备“
+   state BACKUP                # 设置初始状态均为“备“
        interface eth0          # 设置绑定 VIP 的网卡 例如 eth0  
        virtual_router_id 51    # 配置集群 virtual_router_id 值
        nopreempt               # 设置非抢占模式
        # preempt_delay 10      # 仅 state MASTER 时生效   
-       priority 50              # 设置优先级，值越大优先级越高
-       advert_int 1        
+       priority 100              # 两设备是相同值的等权重节点
+       advert_int 1       
        authentication {
            auth_type PASS
            auth_pass 1111
