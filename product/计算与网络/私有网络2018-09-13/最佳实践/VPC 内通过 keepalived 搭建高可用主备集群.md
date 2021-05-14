@@ -26,7 +26,8 @@
 + 控制单个网卡上配置的 VIP 数量，建议目前在单个网卡绑定的高可用虚拟 IP 数量不超过5个。如果需要使用多个虚拟 IP，建议在 keepalived 配置文件的 global_defs 段落添加或修改配置 “vrrp_garp_master_repeat 1”。
 + 通过调节 adver_int 参数的大小，在抗网络抖动及灾害恢复速度进行平衡取舍。当 advert_int 参数过小，容易受网络抖动影响发生频繁倒换和暂时 **双主（脑裂）** 直到网络恢复。当 advert_int 参数过大，会导致主机器故障后，主备倒换慢（即服务暂停时间长）。**请充分评估双主（脑裂）对业务的影响！**
 + track_script 脚本的具体执行项（如 checkhaproxy ）中的 interval 参数请适当提高，避免脚本执行超时导致 FAULT 状态的发生。
-+（可选）注意日志打印导致的磁盘使用量上涨，可以通过 logrotate 等工具解决。
++ 可选：注意日志打印导致的磁盘使用量上涨，可以通过 logrotate 等工具解决。
+
 
 ## 操作步骤
 
@@ -76,7 +77,7 @@
 
 ### 步骤3：配置 keepalived，绑定高可用 VIP 到主备云服务器
 1. 登录主节点云服务器 HAVIP-01，执行 `vim /etc/keepalived/keepalived.conf`，修改相关配置。
-   HAVIP-01 和 HAVIP-02 在本例中将被配置成“等权重节点”，即 state 均为 BACKUP，priority 均为 100
+   HAVIP-01 和 HAVIP-02 在本例中将被配置成“等权重节点”，即 state 均为 BACKUP，priority 均为 100。优点是可以减少抖动造成的倒换次数。
 
    ```plaintext
    ! Configuration File for keepalived
